@@ -19,12 +19,10 @@ class TimeIntervalPD:
         self.f = None
         self.make_func()
 
-    def set_df_mode(self,mode = "literal"):
-        assert mode in ['literal','round']
-
     def make_func(self):
         if not (type(self.a) is np.ndarray):
             self.f = self.make_dfunc(self.a)
+            return
         self.f = self.make_pfunc(self.a)
 
     def make_dfunc(self, d):
@@ -32,8 +30,9 @@ class TimeIntervalPD:
         s = None
         if d[1] == 'literal':
             def f(x):
-                if x not in d: return None
-                return d[x]
+                if x not in d[0]: return None
+                return d[0][x]
+            print("making literal")
             s = f
         elif d[1] == 'round':
             ks = np.array(list(d.keys()))
@@ -53,7 +52,7 @@ class TimeIntervalPD:
         lps = LagrangePolySolver(points, prefetch = True)
         return lps.output_by_lagrange_basis
 
-    def value(self,t):
+    def __getitem__(self,t):
         return self.f(t)
 
 """
@@ -85,7 +84,7 @@ class TimestampActivationSwitch:
         if self.terminated: return None
 
         # get pr. value
-        pr = self.mFunc(t)
+        pr = self.mFunc[self.t]
 
         # get pr-based value
         r = self.bFunc(pr)
