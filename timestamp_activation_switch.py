@@ -79,6 +79,13 @@ class TimestampActivationSwitch:
     def passed_limit(self):
         return self.t > self.l
 
+    """
+    return:
+    - time::float,
+    - pr::(in [0,1])
+    - output from `bFunc(pr)`
+    - terminated::bool
+    """
     def __next__(self):
         if self.passed_limit(): return None
         if self.terminated: return None
