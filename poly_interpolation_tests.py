@@ -13,7 +13,7 @@ class TestLagrangePolySolverMethods(unittest.TestCase):
         for x in xpoints:
             lb = lps.output_by_lagrange_basis(x)
             vf = lps.output_by_vector_form(x)
-            self.assertTrue(abs(lb - vf < 10 ** -5))#, "unequal values by lagrange and vector solution"
+            self.assertTrue(abs(lb - vf) < 10 ** -5)#, "unequal values by lagrange and vector solution"
         return
 
     def test__LagrangePolySolver_required_velocity_for_travel_of_range_angle_effect(self):
@@ -236,7 +236,7 @@ class TestLagrangePolySolverMethods(unittest.TestCase):
             self.assertTrue(i == -1, "line not in bounds")
             c += 1
         assert c == parts, "incorrect # of lines"
-    
+
 
 
 if __name__ == '__main__':
